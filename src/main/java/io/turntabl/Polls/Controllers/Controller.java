@@ -1,6 +1,4 @@
 package io.turntabl.Polls.Controllers;
-
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.turntabl.Polls.dao.DAO;
@@ -11,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 
 @Api
 @RestController
@@ -21,10 +17,6 @@ public class Controller implements DAO {
 
     @Autowired
     JdbcTemplate template;
-
-
-// Polls Controller
-
     @CrossOrigin
     @ApiOperation("Add a Poll")
     @Override
@@ -41,7 +33,6 @@ public class Controller implements DAO {
         return this.template.query("select * from polls", new BeanPropertyRowMapper<PollTO>(PollTO.class));
     }
 
-
     @CrossOrigin
     @ApiOperation("Get Poll by ID")
     @Override
@@ -51,8 +42,8 @@ public class Controller implements DAO {
                 new BeanPropertyRowMapper(PollTO.class));
     }
 
-@CrossOrigin
-@PostMapping("/api/v1/addNewPoll2")
+    @CrossOrigin
+    @PostMapping("/api/v1/addNewPoll2")
     public void addNewPoll2(@RequestBody PollTO poll) {
         template.update("insert into polls(poll_id, question, creator_email, recipient_email) values(?,?,?,?)",  poll.getPoll_id(), poll.getQuestion(), "yaa@turntabl.io", poll.getRecipient_email());
         for(OptionTO o : poll.getOptions()){
@@ -60,15 +51,12 @@ public class Controller implements DAO {
         }
 }
 
-
-        //Options Controller
     @CrossOrigin
     @ApiOperation("Add an Option")
     @Override
     @PostMapping("/api/v1/options")
     public void addNewOptions(@RequestBody OptionTO option) {
         template.update("insert into options (option_id, poll_id, content) values(?,?,?)", option.getOption_id(), option.getPoll_id(), option.getContent());
-
     }
 
     @CrossOrigin
@@ -78,8 +66,6 @@ public class Controller implements DAO {
     public List<OptionTO> getAllOptions() {
         return this.template.query("select * from options", new BeanPropertyRowMapper<OptionTO>(OptionTO.class));
     }
-
-
 
     @CrossOrigin
     @ApiOperation("Get an Option by ID")
@@ -99,10 +85,6 @@ public class Controller implements DAO {
                 new BeanPropertyRowMapper<>(OptionTO.class));
     }
 
-    //
-
-    // Response Controller
-
     @CrossOrigin
     @ApiOperation("Add a Response")
     @Override
@@ -110,7 +92,6 @@ public class Controller implements DAO {
     public void addNewResponse(@RequestBody ResponseTO Response) {
         template.update("insert into responses(response_id, poll_id, option_id, suggestions) values (?,?,?,?)", Response.getResponse_id(), Response.getPoll_id(), Response.getOption_id(), Response.getSuggestions());
     }
-
 
     @CrossOrigin
     @ApiOperation("Delete a Response")
@@ -127,7 +108,6 @@ public class Controller implements DAO {
     public List<ResponseTO> viewAllResponse() {
         return this.template.query("select * from responses", new BeanPropertyRowMapper<ResponseTO>(ResponseTO.class));
     }
-
 
     @CrossOrigin
     @ApiOperation("Get Response by ID")
@@ -146,9 +126,4 @@ public class Controller implements DAO {
         return this.template.query("select * from responses where poll_id = ?", new Object[]{id},
                 new BeanPropertyRowMapper<>(ResponseTO.class));
     }
-
-    //
-
-    //Creators Controller
-
 }

@@ -1,5 +1,4 @@
 package io.turntabl.Polls.models;
-
 import java.util.List;
 
 public class PollTO {
@@ -12,7 +11,6 @@ public class PollTO {
 
     public PollTO() {
     }
-
     public PollTO(String poll_id, String creator_id, String question, String creator_email, String recipient_email, List<OptionTO> options) {
         this.poll_id = poll_id;
         this.creator_id = creator_id;
